@@ -1,0 +1,199 @@
+/*Includes structure for a node which can be use to make new nodes of the Linked List.
+  It is assumed that the data in nodes will be an integer, though
+  function can be modified according to the data type, easily.
+  Here we do insertion and deletion in a single linked list.
+*/
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{int info;
+ struct node *link;
+};
+struct node *start=NULL;
+///////////////////////////////////////////////////////////
+
+struct node * createnode()//function to create node
+{
+  struct node *t;
+  t=(struct node*)malloc(sizeof(struct node));
+  return(t);
+}
+////////////////////////////////////////////////////////
+
+void insert_at_beg()//function to insert at first location
+{
+  struct node *p;
+  p=createnode();
+  printf("Enter the number to insert\n");
+  scanf("%d",&p->info);
+  p->link=NULL;
+  if(start==NULL)
+  {
+      start=p;
+  }
+  else
+  {
+      p->link=start;
+      start=p;
+  }
+}
+
+void insert_at_pos(int pos) // To insert at a given position
+{
+    struct node *p,*ptr;
+    p = createnode();
+    printf("Enter the number to insert\n");
+    scanf("%d",&p->info);
+    if(pos == 1)
+    {
+      p->link = start;
+      start = p;
+    }
+    else
+    {
+        ptr = start;
+        int i;
+        for(i=1 ; i <= pos-2; i++)
+        {
+          ptr = ptr->link;
+        }
+        if(ptr == NULL)
+        {
+          printf("Invalid position\n");
+          free(p);
+        }
+        else
+        {
+           p->link= ptr->link;
+           ptr->link = p;
+        }
+    }
+    
+}
+
+void insert_at_end() //To insert at the end of the linked list
+{
+    struct node *p,*ptr;
+    p=createnode();
+    printf("Enter the number to insert\n");
+    scanf("%d",&p->info);
+    p->link = NULL;
+    if(start == NULL)
+        start = p;
+    else{
+        ptr = start;
+        while(ptr->link)
+        {
+            ptr = ptr->link;
+        }
+        ptr->link = p;
+    }
+  
+ 
+}
+///////////////////////////////////////////////////////////
+
+void delete_from_beg()//function to delete from first position
+{
+    struct node *t;
+    if(start==NULL)
+    {
+        printf("List is empty\n");
+    }
+    else
+    {
+        struct node *p;
+        p=start;
+        start=start->link;
+        free(p);
+    }
+}
+void delete_from_end()//function to delete from end position
+{
+    struct node *t;
+    if(start==NULL)
+    {
+        printf("List is empty\n");
+    }
+    else
+    {
+        t=start;
+        if(t->link == NULL)
+            start = NULL;
+        else{
+            while(t->link->link != NULL)
+            {
+                t = t->link;
+            }
+	   
+            free(t->link);
+            t->link = NULL;
+    	}
+    }
+}
+
+
+///////////////////////////////////////////////////////
+
+void viewlist()//function to display values
+{
+    struct node *p;
+    if(start==NULL)
+    {
+        printf("List is empty\n");
+    }
+    else
+    {   p=start;
+        while(p!=NULL)
+        {
+            printf("%d ",p->info);
+            p=p->link;
+        }
+    }
+}
+//////////////////////////////////////////////////////////////////////
+
+int main()
+{
+    int n,pos;
+    while(1)
+    {
+        printf("\n1.Add value at first location");
+        printf("\n2.Add value at specified location");
+        printf("\n3.Add value at the end position");
+        printf("\n4.Delete value from first location");
+        printf("\n5.Delete value at the end position");
+        printf("\n6.View value");
+        printf("\n7,Quit");
+        printf("\nEnter your choice ");
+        scanf("%d",&n);
+        switch(n)
+        {
+        case 1:
+            insert_at_beg();
+            break;
+        case 2:
+            printf("Enter the position\n");
+            scanf("%d",&pos);
+            insert_at_pos(pos);
+            break;
+        case 3:
+           insert_at_end();
+            break;
+        case 4:
+            delete_from_beg();
+            break;
+        case 5:
+            delete_from_end();
+            break;
+        case 6:
+            viewlist();
+            break; 
+        case 7:
+                exit(1);
+        default:
+            printf("\nInvalid choice, Please try again!");
+        }
+    }
+  return(0);
+}
